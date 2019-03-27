@@ -1,0 +1,15 @@
+ansible_system_user: root
+
+epel_repo: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+manage_firewall: false
+
+logstash_syslog_port: 5044
+logstash_localsyslog_port: 5000
+
+es_local_port: 9200
+es_listen_external: false
+
+zookeeper_port: 2181
+
+kafka_port: 9092

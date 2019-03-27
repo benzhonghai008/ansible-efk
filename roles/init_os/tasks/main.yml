@@ -1,0 +1,19 @@
+---
+- name: stop firewalld
+  service: 
+    name: firewalld
+    state: stop 
+
+- name: stop iptables
+  service:
+    name: iptables
+    state: stop
+
+- name: disable selinux
+  shell: sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+
+- name: disable firewalld
+  shell: systemctl disable firewalld
+
+- name: disable iptables
+  shell: systemctl disable iptables

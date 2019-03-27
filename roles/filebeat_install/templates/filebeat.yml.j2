@@ -1,0 +1,26 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /logs/*.log
+  document_type: logs
+  fields:
+    log_topics: benben
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: true
+setup.template.settings:
+  index.number_of_shards: 3
+setup.kibana:
+
+output.kafka:
+  enabled: true
+  hosts: ["10.6.44.105:9092", "10.6.44.106:9092", "10.6.44.107:9092"]
+  topic: '%{[fields.log_topics]}'
+  partition.round_robin:
+    reachable_only: false
+  required_acks: 1
+  compression: gzip
+  max_message_bytes: 1000000
+processors:
+  - add_host_metadata: ~

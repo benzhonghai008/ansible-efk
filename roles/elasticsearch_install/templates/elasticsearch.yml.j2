@@ -1,0 +1,11 @@
+cluster.name: "ben-es"
+node.name: ${HOSTNAME}
+path.data: /data/elasticsearch
+path.logs: /data/logs/elasticsearch
+network.host: 0.0.0.0
+http.port: 9200
+discovery.zen.ping.unicast.hosts: ["10.6.44.101", "10.6.44.102", "10.6.44.103"]
+discovery.zen.minimum_master_nodes: 2
+#discovery.zen.ping.multicast.enabled: true
+http.cors.enabled: true
+http.cors.allow-origin: "*"

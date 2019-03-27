@@ -1,0 +1,39 @@
+---
+- name: copy kafka package
+  unarchive: 
+    src=kafka_2.12-2.1.0.tgz
+    dest=/usr/local/kafka_2.12-2.1.0
+    owner: root
+    group: elasticsearch
+    mode: u=rw,g=rw,o=r
+
+- name: copy zoo.cfg
+  template:
+    src=zoo.cfg.j2
+    dest=/usr/local/kafka_2.12-2.1.0/config/zookeeper.properties
+    owner=root
+    group=elasticsearch
+    mode=0644
+  become: true
+
+
+- name: start zookeeper
+  shell: ./bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
+  chdir: /usr/local/kafka_2.12-2.1.0
+
+- name: copy server.properties
+  template:
+    src=server.properties.j2
+    dest=/usr/local/kafka_2.12-2.1.0/config/server.properties
+    owner=root
+    group=elasticsearch
+    mode=0644
+  become: true
+
+
+- name: start kafka
+  shell: bin/kafka-server-start.sh config/server.properties -daemon
+  chdir: /usr/local/kafka_2.12-2.1.0
+
+
+

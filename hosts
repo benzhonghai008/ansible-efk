@@ -1,0 +1,14 @@
+
+[filebeat]
+10.6.44.104 ansible_ssh_user=root ansible_ssh_pass=root
+
+[es-kibana]
+10.6.44.[101:103] ansible_ssh_user=root ansible_ssh_pass=root
+
+[kafka-logstash]
+10.6.44.[105:107] ansible_ssh_user=root ansible_ssh_pass=root
+
+[all:children]
+filebeat
+es-kibana
+kafka-logstash

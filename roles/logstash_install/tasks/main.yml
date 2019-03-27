@@ -1,0 +1,49 @@
+---
+- name: Copy logstash yum repo file
+  copy:
+    src=logstash.repo
+    dest=/etc/yum.repos.d/logstash.repo
+    owner=root
+    group=elasticsearch
+    mode=0644
+  become: true
+
+- name: Install logstash rpms
+  yum:
+    name: logstash
+  become: true
+
+- name: Copy logstash filter configuration
+  template:
+    src=logstash.conf.j2
+    dest=/etc/logstash/conf.d/logstash.conf
+    owner=logstash
+    group=logstash
+    mode=0644
+  become: true
+
+  # we need a workaround for netty wanting to use /tmp
+# on most systems this is mounted via noexec for security reasons
+# https://discuss.elastic.co/t/problem-with-cipher-in-beat-input/67841/5
+
+- name: Create tmpdir for logstash netty
+  file:
+    path: /usr/share/logstash/tmpfile
+    state: directory
+    owner: logstash
+    group: logstash
+    mode: 0755
+
+- name: Apply logstash netty tmpdir workaround
+  lineinfile:
+    path=/etc/logstash/jvm.options
+    line='-Dio.netty.native.workdir=/usr/share/logstash/tmpfile/'
+  become: true
+
+
+- name: setup logstash
+  service: 
+    name: logstash
+    state: started
+    enabled: true
+
