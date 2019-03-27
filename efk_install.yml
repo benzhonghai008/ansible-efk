@@ -6,7 +6,4 @@
   roles:
     - { role: elasticsearch_install }
     - { role: kibana_install }
-    - { role: filebeat_install }
-    - { role: zookeeper_install }
-    - { role: kafka_install }
-    - { role: logstash_install }
+
